@@ -1,9 +1,10 @@
 import { login } from "./login.js";
 import { logup } from "./logup.js";
+import { resolver } from "../middlewares/errorAsync.js"
 
 const routes = (app) => {
-  app.use(`/login`, login);
-  app.use(`/logup`, logup);
+  app.use(`/login`, resolver(login));
+  app.use(`/logup`, resolver(logup));
 }
 
 export default routes;

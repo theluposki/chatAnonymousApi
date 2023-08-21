@@ -10,8 +10,6 @@ export const message_done = async (data, socket, io) => {
       data,
     ]);
 
-    console.log(data)
-    console.log(row)
     if(row.affectedRows === 1) {
       console.log("messages delete");
     }
