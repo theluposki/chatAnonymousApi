@@ -21,7 +21,7 @@ export const user_connected = async (data, socket) => {
       logger.info(`${JSON.stringify(data.nickname)} se conectou.`);
     }
   } catch (error) {
-    console.log(`Error: ${error}`);
+    logger.log(`Error: ${error}`);
   } finally {
     if (conn) {
       conn.release();

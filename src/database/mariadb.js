@@ -6,15 +6,19 @@ import { logger } from "../utils/logger.js";
 const pool = mariadb.createPool(config.mariadbConfig);
 
 export async function connectToDatabase() {
+  let conn;
+
   try {
-    const conn = await pool.getConnection();
-    logger.info("[ DB ] Connection successfully established.");
-    await createTables(pool);
-    conn.end();
+    conn = await pool.getConnection();
+    logger.info("[ DB 🗄️] Connection successfully established.");
+    await createTables(conn);
   } catch (err) {
-    logger.error(`[ DB ] Error connecting to database: ${err}`);
+    logger.error(`[ DB 🗄️] Error connecting to database: ${err}`);
+  } finally {
+    if (conn) {
+      conn.release();
+    }
   }
 }
-
 
 export default pool;

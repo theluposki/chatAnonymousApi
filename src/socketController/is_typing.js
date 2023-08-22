@@ -1,4 +1,5 @@
 import db from "../database/mariadb.js";
+import { logger } from "../utils/logger.js";
 
 export const is_typing = async (data, socket, io) => {
   let conn;
@@ -13,7 +14,7 @@ export const is_typing = async (data, socket, io) => {
       });
 
   } catch (error) {
-    console.log(`Error ${error}`);
+    logger.info(`Error ${error}`);
   } finally {
     if (conn) {
       conn.release();

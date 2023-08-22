@@ -15,9 +15,10 @@ function readSQLFile(filePath) {
 }
 
 async function executeSQLCommands(connection, sqlCommands) {
+  let conn = connection;
   try {
     for (const sqlCommand of sqlCommands) {
-      await connection.query(sqlCommand);
+      await conn.query(sqlCommand);
     }
     logger.info("[ DB ] Tabelas criadas com sucesso.");
   } catch (error) {
@@ -25,7 +26,11 @@ async function executeSQLCommands(connection, sqlCommands) {
       const errorMessage = error.message;
       logger.error(errorMessage);
     } else {
-      console.error("Ocorreu um erro desconhecido");
+      logger.error("Ocorreu um erro desconhecido");
+    }
+  }  finally {
+    if (conn) {
+      conn.release();
     }
   }
 }

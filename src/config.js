@@ -20,7 +20,8 @@ const mariadbConfig = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   port: Number(process.env.DB_PORT),
-  connectionLimit: 120,
+  connectionLimit: 20,
+  acquireTimeout: 10000,
 };
 
 export default {

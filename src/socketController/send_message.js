@@ -7,7 +7,7 @@ export const send_message = async (data, socket, io) => {
   logger.info(`socket: ${JSON.stringify(socket.id)}`);
 
 
-  const { senderNickname, sender, receiverNickname, receiver, message } = data;
+  const { senderNickname, sender, receiverNickname, receiver, message, status = 'pending', uuidMessage } = data;
 
   let conn;
 
@@ -26,13 +26,13 @@ export const send_message = async (data, socket, io) => {
     );
 
     if (!existingSender[0]?.nickname || !existingReceiver[0]?.nickname) {
-      return console.log("Não foi possivel enviar a mensagem");
+      return logger.info("Não foi possivel enviar a mensagem");
     }
 
     const querySendMessage = `
           INSERT INTO conversations 
-          (id,senderNickname,sender,receiverNickname,receiver, message) 
-          VALUES (?,?,?,?,?,?);
+          (id,senderNickname,sender,receiverNickname,receiver, message, status, uuidMessage) 
+          VALUES (?,?,?,?,?,?,?,?);
     `;
 
     const row = await conn.query(querySendMessage, [
@@ -42,6 +42,8 @@ export const send_message = async (data, socket, io) => {
       receiverNickname,
       receiver,
       message,
+      status,
+      uuidMessage
     ]);
 
     if (row.affectedRows === 1) {
@@ -54,6 +56,8 @@ export const send_message = async (data, socket, io) => {
         receiverNickname,
         receiver,
         message,
+        status,
+        uuidMessage
       });
     }
   } catch (error) {

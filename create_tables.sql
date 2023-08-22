@@ -15,6 +15,8 @@ CREATE TABLE
         receiverNickname VARCHAR(255) NOT NULL,
         receiver VARCHAR(60) NOT NULL,
         message LONGTEXT NOT NULL,
+        status ENUM('pending', 'done') DEFAULT 'pending',
+        uuidMessage VARCHAR(36),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

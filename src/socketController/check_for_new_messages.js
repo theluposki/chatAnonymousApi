@@ -1,8 +1,8 @@
 import db from "../database/mariadb.js";
+import { logger } from "../utils/logger.js";
 
 export const check_for_new_messages = async (data, socket, io) => {
   const { userId, friendId } = data
-  console.log("chamou!")
   
   let conn;
 
@@ -11,15 +11,15 @@ export const check_for_new_messages = async (data, socket, io) => {
 
     const conversations = await conn.query(
       `SELECT * FROM conversations 
-           WHERE sender=? AND receiver=? or sender=? AND receiver=?`,
-      [userId, friendId, friendId, userId]
+           WHERE sender=? AND receiver=?`,
+      [friendId, userId]
     );
     
     if(conversations.length > 0) {
       socket.emit("have_new_messages", conversations);
     }
   } catch (error) {
-    console.log(`Error ${error}`);
+    logger.info(`Error ${error}`);
   } finally {
     if (conn) {
       conn.release();
